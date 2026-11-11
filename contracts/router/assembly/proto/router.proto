@@ -1,0 +1,137 @@
+syntax = "proto3";
+package router;
+import "koinos/options.proto";
+
+/*
+* Conventions
+* - tokens are identified by strings: system tokens by their name service name ("koin", "vhp")
+*   and any other token by its base58 address (same as the KoinDX v2 periphery)
+* - a path is described by `tokens` (n tokens, in the swap direction) and `fees`
+*   (n - 1 fees, fees[i] is the fee of the pool between tokens[i] and tokens[i + 1])
+* - `from` is the account that pays the input tokens: it must sign the transaction (or be the
+*   calling contract), like the `from` argument of the KoinDX v2 periphery
+* - `deadline` is a timestamp in milliseconds, mandatory: the operation reverts after it (and with 0)
+* - `sqrt_price_limit_x96` is a decimal Q64.96 number ("" or "0" = no limit)
+* - repeated numbers are [packed = true] (proto3 encoding of koilib), checked by scripts/build.js
+*/
+
+message empty_object {}
+
+message address {
+  bytes value = 1 [(koinos.btype) = ADDRESS];
+}
+
+/*
+* Internal objects
+*/
+
+// data sent to the pool and received back in koindx_v3_swap_callback
+message swap_callback_data {
+  repeated string path_tokens = 1;
+  repeated uint32 path_fees = 2 [packed = true];
+  bytes payer = 3 [(koinos.btype) = ADDRESS];
+}
+
+// input amount of a multi hop exact output swap (Uniswap: amountInCached)
+message amount_in_cache {
+  uint64 value = 1 [jstype = JS_STRING];
+}
+
+/*
+* Read methods
+*/
+
+// @description Get the address of the KoinDX v3 factory used by the router
+// @read-only true
+// @result address
+message factory_arguments {}
+
+/*
+* Write methods
+*/
+
+// @description Swaps `amount_in` of one token for as much as possible of another token
+// @read-only false
+message exact_input_single_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes recipient = 2 [(koinos.btype) = ADDRESS];
+  string token_in = 3;
+  string token_out = 4;
+  uint32 fee = 5;
+  uint64 amount_in = 6 [jstype = JS_STRING];
+  uint64 amount_out_minimum = 7 [jstype = JS_STRING];
+  string sqrt_price_limit_x96 = 8;
+  uint64 deadline = 9 [jstype = JS_STRING];
+}
+message exact_input_single_result {
+  uint64 amount_out = 1 [jstype = JS_STRING];
+}
+
+// @description Swaps `amount_in` of one token for as much as possible of another along the specified path
+// @read-only false
+message exact_input_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes recipient = 2 [(koinos.btype) = ADDRESS];
+  repeated string tokens = 3;
+  repeated uint32 fees = 4 [packed = true];
+  uint64 amount_in = 5 [jstype = JS_STRING];
+  uint64 amount_out_minimum = 6 [jstype = JS_STRING];
+  uint64 deadline = 7 [jstype = JS_STRING];
+}
+message exact_input_result {
+  uint64 amount_out = 1 [jstype = JS_STRING];
+}
+
+// @description Swaps as little as possible of one token for `amount_out` of another token
+// @read-only false
+message exact_output_single_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes recipient = 2 [(koinos.btype) = ADDRESS];
+  string token_in = 3;
+  string token_out = 4;
+  uint32 fee = 5;
+  uint64 amount_out = 6 [jstype = JS_STRING];
+  uint64 amount_in_maximum = 7 [jstype = JS_STRING];
+  string sqrt_price_limit_x96 = 8;
+  uint64 deadline = 9 [jstype = JS_STRING];
+}
+message exact_output_single_result {
+  uint64 amount_in = 1 [jstype = JS_STRING];
+}
+
+// @description Swaps as little as possible of one token for `amount_out` of another along the specified path (tokens in swap order)
+// @read-only false
+message exact_output_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes recipient = 2 [(koinos.btype) = ADDRESS];
+  repeated string tokens = 3;
+  repeated uint32 fees = 4 [packed = true];
+  uint64 amount_out = 5 [jstype = JS_STRING];
+  uint64 amount_in_maximum = 6 [jstype = JS_STRING];
+  uint64 deadline = 7 [jstype = JS_STRING];
+}
+message exact_output_result {
+  uint64 amount_in = 1 [jstype = JS_STRING];
+}
+
+// @description Sends the whole balance of `token` held by the router to `recipient`, if at least `amount_minimum`. Anybody can call it (Uniswap: sweepToken); the router only holds what a multi hop swap left when an intermediate hop was partly filled
+// @read-only false
+// @result sweep_token_result
+message sweep_token_arguments {
+  string token = 1;
+  uint64 amount_minimum = 2 [jstype = JS_STRING];
+  bytes recipient = 3 [(koinos.btype) = ADDRESS];
+}
+message sweep_token_result {
+  uint64 amount = 1 [jstype = JS_STRING];
+}
+
+// @description Called by a KoinDX v3 pool after a swap, pays the tokens owed to the pool
+// @read-only false
+// @result empty_object
+message koindx_v3_swap_callback_arguments {
+  bool zero_for_one = 1;
+  uint64 amount_in = 2 [jstype = JS_STRING];
+  uint64 amount_out = 3 [jstype = JS_STRING];
+  bytes data = 4;
+}

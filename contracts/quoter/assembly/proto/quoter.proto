@@ -1,0 +1,82 @@
+syntax = "proto3";
+package quoter;
+import "koinos/options.proto";
+
+/*
+* Port of Uniswap v3 QuoterV2.
+*
+* Uniswap's quoter executes the swap and reverts to read the result. Koinos read-only calls
+* cannot write state, so the KoinDX quoter uses `quote_swap` of the pools, a read-only
+* simulation of the swap that runs the same swap loop without writing anything.
+*
+* - tokens are identified by strings ("koin", "vhp" or a base58 address)
+* - paths are described by `tokens` (in swap order) and `fees` (fees[i] is the fee of the
+*   pool between tokens[i] and tokens[i + 1])
+* - each pool of a multi hop path is simulated against its current state
+* - repeated numbers are [packed = true] (proto3 encoding of koilib), checked by scripts/build.js
+*/
+
+message address {
+  bytes value = 1 [(koinos.btype) = ADDRESS];
+}
+
+// @description Get the address of the KoinDX v3 factory used by the quoter
+// @read-only true
+// @result address
+message factory_arguments {}
+
+// @description Returns the amount out received for a given exact input but for a swap of a single pool
+// @read-only true
+message quote_exact_input_single_arguments {
+  string token_in = 1;
+  string token_out = 2;
+  uint32 fee = 3;
+  uint64 amount_in = 4 [jstype = JS_STRING];
+  string sqrt_price_limit_x96 = 5;
+}
+message quote_exact_input_single_result {
+  uint64 amount_out = 1 [jstype = JS_STRING];
+  string sqrt_price_x96_after = 2;
+  uint32 initialized_ticks_crossed = 3;
+}
+
+// @description Returns the amount out received for a given exact input swap without executing the swap
+// @read-only true
+message quote_exact_input_arguments {
+  repeated string tokens = 1;
+  repeated uint32 fees = 2 [packed = true];
+  uint64 amount_in = 3 [jstype = JS_STRING];
+}
+message quote_exact_input_result {
+  uint64 amount_out = 1 [jstype = JS_STRING];
+  repeated string sqrt_price_x96_after_list = 2;
+  repeated uint32 initialized_ticks_crossed_list = 3 [packed = true];
+}
+
+// @description Returns the amount in required to receive the given exact output amount but for a swap of a single pool
+// @read-only true
+message quote_exact_output_single_arguments {
+  string token_in = 1;
+  string token_out = 2;
+  uint32 fee = 3;
+  uint64 amount_out = 4 [jstype = JS_STRING];
+  string sqrt_price_limit_x96 = 5;
+}
+message quote_exact_output_single_result {
+  uint64 amount_in = 1 [jstype = JS_STRING];
+  string sqrt_price_x96_after = 2;
+  uint32 initialized_ticks_crossed = 3;
+}
+
+// @description Returns the amount in required for a given exact output swap without executing the swap (tokens in swap order)
+// @read-only true
+message quote_exact_output_arguments {
+  repeated string tokens = 1;
+  repeated uint32 fees = 2 [packed = true];
+  uint64 amount_out = 3 [jstype = JS_STRING];
+}
+message quote_exact_output_result {
+  uint64 amount_in = 1 [jstype = JS_STRING];
+  repeated string sqrt_price_x96_after_list = 2;
+  repeated uint32 initialized_ticks_crossed_list = 3 [packed = true];
+}

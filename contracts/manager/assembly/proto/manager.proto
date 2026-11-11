@@ -1,0 +1,367 @@
+syntax = "proto3";
+package manager;
+import "koinos/options.proto";
+
+/*
+* KoinDX v3 positions manager: port of Uniswap v3 NonfungiblePositionManager.
+*
+* Wraps KoinDX v3 positions in NFTs. The NFT methods follow the Koinos collections standard
+* (KCS-2, plus `get_tokens_by_owner` from KCS-5), token ids are 8 bytes (big endian uint64).
+*
+* - tokens are identified by strings ("koin", "vhp" or a base58 address), token0 < token1
+* - `from` is the account executing the operation: it must sign the transaction (or be the
+*   calling contract), like the `from` argument of the KoinDX v2 periphery
+* - `deadline` is a timestamp in milliseconds, mandatory: the operation reverts after it (and with 0)
+* - liquidity values are decimal strings (uint128)
+*/
+
+/*
+* Objects
+*/
+message empty_object {}
+
+message str {
+  string value = 1;
+}
+
+message uint64 {
+  uint64 value = 1 [jstype = JS_STRING];
+}
+
+message boole {
+  bool value = 1;
+}
+
+message address {
+  bytes value = 1 [(koinos.btype) = ADDRESS];
+}
+
+message pool_key {
+  string token0 = 1;
+  string token1 = 2;
+  uint32 fee = 3;
+}
+
+/*
+* Storage records (internal)
+*/
+message counters_record {
+  uint64 next_id = 1 [jstype = JS_STRING];
+  uint64 next_pool_id = 2 [jstype = JS_STRING];
+  uint64 total_supply = 3 [jstype = JS_STRING];
+}
+
+message pool_record {
+  string token0 = 1;
+  string token1 = 2;
+  uint32 fee = 3;
+  bytes pool = 4 [(koinos.btype) = ADDRESS];
+}
+
+message position_record {
+  uint64 pool_id = 1 [jstype = JS_STRING];
+  sint32 tick_lower = 2;
+  sint32 tick_upper = 3;
+  bytes liquidity = 4;
+  bytes fee_growth_inside0_last_x128 = 5;
+  bytes fee_growth_inside1_last_x128 = 6;
+  bytes tokens_owed0 = 7;
+  bytes tokens_owed1 = 8;
+}
+
+// data sent to the pool and received back in koindx_v3_mint_callback
+message mint_callback_data {
+  pool_key pool_key = 1;
+  bytes payer = 2 [(koinos.btype) = ADDRESS];
+}
+
+/*
+* NFT read methods (KCS-2 / KCS-5)
+*/
+
+// @description Get the name of the NFT collection
+// @read-only true
+// @result str
+message name_arguments {}
+
+// @description Get the symbol of the NFT collection
+// @read-only true
+// @result str
+message symbol_arguments {}
+
+// @description Get the URI of the NFT metadata (empty: the metadata is returned by metadata_of)
+// @read-only true
+// @result str
+message uri_arguments {}
+
+// @description Get name, symbol, uri and description of the NFT collection
+// @read-only true
+message get_info_arguments {}
+message get_info_result {
+  string name = 1;
+  string symbol = 2;
+  string uri = 3;
+  string description = 4;
+}
+
+// @description Get the total number of position NFTs
+// @read-only true
+// @result uint64
+message total_supply_arguments {}
+
+// @description Get the number of position NFTs of an account
+// @read-only true
+// @result uint64
+message balance_of_arguments {
+  bytes owner = 1 [(koinos.btype) = ADDRESS];
+}
+
+// @description Get the owner of a position NFT
+// @read-only true
+// @result address
+message owner_of_arguments {
+  bytes token_id = 1 [(koinos.btype) = HEX];
+}
+
+// @description Get the account approved to manage a position NFT
+// @read-only true
+// @result address
+message get_approved_arguments {
+  bytes token_id = 1 [(koinos.btype) = HEX];
+}
+
+// @description Check if an operator is approved to manage all the position NFTs of an owner
+// @read-only true
+// @result boole
+message is_approved_for_all_arguments {
+  bytes owner = 1 [(koinos.btype) = ADDRESS];
+  bytes operator = 2 [(koinos.btype) = ADDRESS];
+}
+
+// @description Get a page of the position NFTs owned by an account (after `start`)
+// @read-only true
+message get_tokens_by_owner_arguments {
+  bytes owner = 1 [(koinos.btype) = ADDRESS];
+  bytes start = 2 [(koinos.btype) = HEX];
+  int32 limit = 3;
+  bool descending = 4;
+}
+message get_tokens_by_owner_result {
+  repeated bytes values = 1 [(koinos.btype) = HEX];
+}
+
+// @description Get the metadata (JSON) of a position NFT
+// @read-only true
+// @result str
+message metadata_of_arguments {
+  bytes token_id = 1 [(koinos.btype) = HEX];
+}
+
+/*
+* NFT write methods (KCS-2)
+*/
+
+// @description Transfer a position NFT
+// @read-only false
+// @result empty_object
+message transfer_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes to = 2 [(koinos.btype) = ADDRESS];
+  bytes token_id = 3 [(koinos.btype) = HEX];
+}
+
+// @description Approve an account to manage a position NFT
+// @read-only false
+// @result empty_object
+message approve_arguments {
+  bytes approver_address = 1 [(koinos.btype) = ADDRESS];
+  bytes to = 2 [(koinos.btype) = ADDRESS];
+  bytes token_id = 3 [(koinos.btype) = HEX];
+}
+
+// @description Approve or revoke an operator to manage all the position NFTs of the approver
+// @read-only false
+// @result empty_object
+message set_approval_for_all_arguments {
+  bytes approver_address = 1 [(koinos.btype) = ADDRESS];
+  bytes operator_address = 2 [(koinos.btype) = ADDRESS];
+  bool approved = 3;
+}
+
+/*
+* Positions
+*/
+
+// @description Get the address of the KoinDX v3 factory used by the manager
+// @read-only true
+// @result address
+message factory_arguments {}
+
+// @description Returns the position information associated with a given token ID
+// @read-only true
+message positions_arguments {
+  bytes token_id = 1 [(koinos.btype) = HEX];
+}
+message positions_result {
+  bytes operator = 1 [(koinos.btype) = ADDRESS];
+  string token0 = 2;
+  string token1 = 3;
+  uint32 fee = 4;
+  int32 tick_lower = 5;
+  int32 tick_upper = 6;
+  string liquidity = 7;
+  string fee_growth_inside0_last_x128 = 8;
+  string fee_growth_inside1_last_x128 = 9;
+  string tokens_owed0 = 10;
+  string tokens_owed1 = 11;
+  bytes pool = 12 [(koinos.btype) = ADDRESS];
+}
+
+// @description Initialize the price of a pool if it is not initialized yet (the pool must be created with the factory first)
+// @read-only false
+// @result address
+message initialize_pool_if_necessary_arguments {
+  string token0 = 1;
+  string token1 = 2;
+  uint32 fee = 3;
+  string sqrt_price_x96 = 4;
+}
+
+// @description Creates a new position wrapped in a NFT
+// @read-only false
+message mint_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes recipient = 2 [(koinos.btype) = ADDRESS];
+  string token0 = 3;
+  string token1 = 4;
+  uint32 fee = 5;
+  int32 tick_lower = 6;
+  int32 tick_upper = 7;
+  uint64 amount0_desired = 8 [jstype = JS_STRING];
+  uint64 amount1_desired = 9 [jstype = JS_STRING];
+  uint64 amount0_min = 10 [jstype = JS_STRING];
+  uint64 amount1_min = 11 [jstype = JS_STRING];
+  uint64 deadline = 12 [jstype = JS_STRING];
+}
+message mint_result {
+  bytes token_id = 1 [(koinos.btype) = HEX];
+  string liquidity = 2;
+  uint64 amount0 = 3 [jstype = JS_STRING];
+  uint64 amount1 = 4 [jstype = JS_STRING];
+}
+
+// @description Increases the amount of liquidity in a position, with tokens paid by `from`
+// @read-only false
+message increase_liquidity_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes token_id = 2 [(koinos.btype) = HEX];
+  uint64 amount0_desired = 3 [jstype = JS_STRING];
+  uint64 amount1_desired = 4 [jstype = JS_STRING];
+  uint64 amount0_min = 5 [jstype = JS_STRING];
+  uint64 amount1_min = 6 [jstype = JS_STRING];
+  uint64 deadline = 7 [jstype = JS_STRING];
+}
+message increase_liquidity_result {
+  string liquidity = 1;
+  uint64 amount0 = 2 [jstype = JS_STRING];
+  uint64 amount1 = 3 [jstype = JS_STRING];
+}
+
+// @description Decreases the amount of liquidity in a position and accounts it to the position
+// @read-only false
+message decrease_liquidity_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes token_id = 2 [(koinos.btype) = HEX];
+  string liquidity = 3;
+  uint64 amount0_min = 4 [jstype = JS_STRING];
+  uint64 amount1_min = 5 [jstype = JS_STRING];
+  uint64 deadline = 6 [jstype = JS_STRING];
+}
+message decrease_liquidity_result {
+  uint64 amount0 = 1 [jstype = JS_STRING];
+  uint64 amount1 = 2 [jstype = JS_STRING];
+}
+
+// @description Collects up to a maximum amount of fees owed to a specific position to the recipient
+// @read-only false
+message collect_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes token_id = 2 [(koinos.btype) = HEX];
+  bytes recipient = 3 [(koinos.btype) = ADDRESS];
+  uint64 amount0_max = 4 [jstype = JS_STRING];
+  uint64 amount1_max = 5 [jstype = JS_STRING];
+}
+message collect_result {
+  uint64 amount0 = 1 [jstype = JS_STRING];
+  uint64 amount1 = 2 [jstype = JS_STRING];
+}
+
+// @description Burns a token ID, which deletes it from the NFT contract. The position must have 0 liquidity and all tokens must be collected first
+// @read-only false
+// @result empty_object
+message burn_arguments {
+  bytes token_id = 1 [(koinos.btype) = HEX];
+  bytes from = 3 [(koinos.btype) = ADDRESS];
+}
+
+// @description Called by a KoinDX v3 pool after minting liquidity, pays the tokens owed to the pool
+// @read-only false
+// @result empty_object
+message koindx_v3_mint_callback_arguments {
+  uint64 amount0_owed = 1 [jstype = JS_STRING];
+  uint64 amount1_owed = 2 [jstype = JS_STRING];
+  bytes data = 3;
+}
+
+/*
+* Events
+*/
+message increase_liquidity_event {
+  bytes token_id = 1 [(koinos.btype) = HEX];
+  string liquidity = 2;
+  uint64 amount0 = 3 [jstype = JS_STRING];
+  uint64 amount1 = 4 [jstype = JS_STRING];
+}
+
+message decrease_liquidity_event {
+  bytes token_id = 1 [(koinos.btype) = HEX];
+  string liquidity = 2;
+  uint64 amount0 = 3 [jstype = JS_STRING];
+  uint64 amount1 = 4 [jstype = JS_STRING];
+}
+
+message collect_event {
+  bytes token_id = 1 [(koinos.btype) = HEX];
+  bytes recipient = 2 [(koinos.btype) = ADDRESS];
+  uint64 amount0 = 3 [jstype = JS_STRING];
+  uint64 amount1 = 4 [jstype = JS_STRING];
+}
+
+// collections.* events (KCS-2 / KCS-5)
+message mint_event {
+  bytes to = 1 [(koinos.btype) = ADDRESS];
+  bytes token_id = 2 [(koinos.btype) = HEX];
+}
+
+message burn_event {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes token_id = 2 [(koinos.btype) = HEX];
+}
+
+message transfer_event {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes to = 2 [(koinos.btype) = ADDRESS];
+  bytes token_id = 3 [(koinos.btype) = HEX];
+}
+
+message token_approval_event {
+  bytes approver_address = 1 [(koinos.btype) = ADDRESS];
+  bytes to = 2 [(koinos.btype) = ADDRESS];
+  bytes token_id = 3 [(koinos.btype) = HEX];
+}
+
+message operator_approval_event {
+  bytes approver_address = 1 [(koinos.btype) = ADDRESS];
+  bytes operator_address = 2 [(koinos.btype) = ADDRESS];
+  bool approved = 3;
+}

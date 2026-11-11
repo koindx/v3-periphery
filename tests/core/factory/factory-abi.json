@@ -1,0 +1,551 @@
+{
+  "methods": {
+    "owner": {
+      "description": "Get the current owner of the factory",
+      "argument": "factory.owner_arguments",
+      "return": "factory.address",
+      "entry_point": 1276127593,
+      "read_only": true
+    },
+    "authorize": {
+      "description": "Check if authorized",
+      "read-only": false,
+      "argument": "koinos.chain.authorize_arguments",
+      "return": "koinos.chain.authorize_result",
+      "entry_point": 1244511632
+    },
+    "pending_owner": {
+      "description": "Get the owner proposed by set_owner, empty if none (it becomes the owner when it calls accept_owner)",
+      "argument": "factory.pending_owner_arguments",
+      "return": "factory.address",
+      "entry_point": 3446731111,
+      "read_only": true
+    },
+    "fee_amount_tick_spacing": {
+      "description": "Get the tick spacing for a given fee amount, if enabled, or 0 if not enabled",
+      "argument": "factory.fee_amount_tick_spacing_arguments",
+      "return": "factory.int32_value",
+      "entry_point": 480751019,
+      "read_only": true
+    },
+    "get_pool": {
+      "description": "Get the pool address for a given pair of tokens and a fee, or an empty address if it does not exist",
+      "argument": "factory.get_pool_arguments",
+      "return": "factory.address",
+      "entry_point": 1544779537,
+      "read_only": true
+    },
+    "allowances_exempt": {
+      "description": "Whether create_pool skips the allowance check of a token (see set_allowances_exempt)",
+      "argument": "factory.allowances_exempt_arguments",
+      "return": "factory.bool_value",
+      "entry_point": 2026655892,
+      "read_only": true
+    },
+    "get_pools": {
+      "description": "Get a page of the pools created by the factory, starting at index `start`",
+      "argument": "factory.get_pools_arguments",
+      "return": "factory.get_pools_result",
+      "entry_point": 972238462,
+      "read_only": true
+    },
+    "create_pool": {
+      "description": "Create a pool for the given two tokens and fee. Must be an operation of the transaction (not a call from a contract) that uploads the pool bytecode in an earlier operation; the pool address must have no allowances on the two tokens",
+      "argument": "factory.create_pool_arguments",
+      "return": "factory.address",
+      "entry_point": 3555924671,
+      "read_only": false
+    },
+    "set_owner": {
+      "description": "Propose a new owner of the factory (only owner): it becomes the owner when it calls accept_owner",
+      "argument": "factory.set_owner_arguments",
+      "return": "factory.empty_object",
+      "entry_point": 238845787,
+      "read_only": false
+    },
+    "accept_owner": {
+      "description": "Accept the ownership of the factory (only the owner proposed by set_owner)",
+      "argument": "factory.accept_owner_arguments",
+      "return": "factory.empty_object",
+      "entry_point": 3668871220,
+      "read_only": false
+    },
+    "enable_fee_amount": {
+      "description": "Enable a fee amount with the given tick spacing (only owner)",
+      "argument": "factory.enable_fee_amount_arguments",
+      "return": "factory.empty_object",
+      "entry_point": 12902682,
+      "read_only": false
+    },
+    "set_allowances_exempt": {
+      "description": "Exempt a token from the allowance check of create_pool, or remove the exemption (only owner). Only for tokens that have no allowances (no approve, e.g. KCS-1 tokens) and so can't answer get_allowances",
+      "argument": "factory.set_allowances_exempt_arguments",
+      "return": "factory.empty_object",
+      "entry_point": 2686116206,
+      "read_only": false
+    }
+  },
+  "types": {
+    "nested": {
+      "factory": {
+        "nested": {
+          "empty_object": {
+            "fields": {}
+          },
+          "address": {
+            "fields": {
+              "value": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "int32_value": {
+            "fields": {
+              "value": {
+                "type": "int32",
+                "id": 1
+              }
+            }
+          },
+          "bool_value": {
+            "fields": {
+              "value": {
+                "type": "bool",
+                "id": 1
+              }
+            }
+          },
+          "token_object": {
+            "fields": {
+              "isNameservice": {
+                "type": "bool",
+                "id": 1
+              },
+              "nameservice": {
+                "type": "string",
+                "id": 2
+              },
+              "tokenAddress": {
+                "type": "bytes",
+                "id": 3,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "pool_info": {
+            "fields": {
+              "pool": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "token0": {
+                "type": "string",
+                "id": 2
+              },
+              "token1": {
+                "type": "string",
+                "id": 3
+              },
+              "fee": {
+                "type": "uint32",
+                "id": 4
+              },
+              "tickSpacing": {
+                "type": "int32",
+                "id": 5
+              }
+            }
+          },
+          "fee_record": {
+            "fields": {
+              "tickSpacing": {
+                "type": "sint32",
+                "id": 1
+              }
+            }
+          },
+          "counter_record": {
+            "fields": {
+              "value": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "pool_configure_args": {
+            "fields": {
+              "token0": {
+                "type": "token_object",
+                "id": 1
+              },
+              "token1": {
+                "type": "token_object",
+                "id": 2
+              },
+              "fee": {
+                "type": "uint32",
+                "id": 3
+              },
+              "tickSpacing": {
+                "type": "int32",
+                "id": 4
+              }
+            }
+          },
+          "owner_arguments": {
+            "fields": {}
+          },
+          "pending_owner_arguments": {
+            "fields": {}
+          },
+          "fee_amount_tick_spacing_arguments": {
+            "fields": {
+              "fee": {
+                "type": "uint32",
+                "id": 1
+              }
+            }
+          },
+          "get_pool_arguments": {
+            "fields": {
+              "tokenA": {
+                "type": "string",
+                "id": 1
+              },
+              "tokenB": {
+                "type": "string",
+                "id": 2
+              },
+              "fee": {
+                "type": "uint32",
+                "id": 3
+              }
+            }
+          },
+          "allowances_exempt_arguments": {
+            "fields": {
+              "token": {
+                "type": "string",
+                "id": 1
+              }
+            }
+          },
+          "get_pools_arguments": {
+            "fields": {
+              "start": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "limit": {
+                "type": "uint32",
+                "id": 2
+              }
+            }
+          },
+          "get_pools_result": {
+            "fields": {
+              "pools": {
+                "rule": "repeated",
+                "type": "pool_info",
+                "id": 1
+              },
+              "total": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "create_pool_arguments": {
+            "fields": {
+              "tokenA": {
+                "type": "string",
+                "id": 1
+              },
+              "tokenB": {
+                "type": "string",
+                "id": 2
+              },
+              "fee": {
+                "type": "uint32",
+                "id": 3
+              }
+            }
+          },
+          "set_owner_arguments": {
+            "fields": {
+              "owner": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "accept_owner_arguments": {
+            "fields": {}
+          },
+          "enable_fee_amount_arguments": {
+            "fields": {
+              "fee": {
+                "type": "uint32",
+                "id": 1
+              },
+              "tickSpacing": {
+                "type": "int32",
+                "id": 2
+              }
+            }
+          },
+          "set_allowances_exempt_arguments": {
+            "fields": {
+              "token": {
+                "type": "string",
+                "id": 1
+              },
+              "exempt": {
+                "type": "bool",
+                "id": 2
+              }
+            }
+          },
+          "token_get_allowances_args": {
+            "fields": {
+              "owner": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "start": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "limit": {
+                "type": "int32",
+                "id": 3
+              },
+              "descending": {
+                "type": "bool",
+                "id": 4
+              }
+            }
+          },
+          "token_spender_value": {
+            "fields": {
+              "spender": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "value": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "token_allowances_page": {
+            "fields": {
+              "owner": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "allowances": {
+                "rule": "repeated",
+                "type": "token_spender_value",
+                "id": 2
+              }
+            }
+          },
+          "owner_changed_event": {
+            "fields": {
+              "oldOwner": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "newOwner": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "owner_proposed_event": {
+            "fields": {
+              "owner": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "pendingOwner": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "fee_amount_enabled_event": {
+            "fields": {
+              "fee": {
+                "type": "uint32",
+                "id": 1
+              },
+              "tickSpacing": {
+                "type": "int32",
+                "id": 2
+              }
+            }
+          },
+          "pool_created_event": {
+            "fields": {
+              "token0": {
+                "type": "string",
+                "id": 1
+              },
+              "token1": {
+                "type": "string",
+                "id": 2
+              },
+              "fee": {
+                "type": "uint32",
+                "id": 3
+              },
+              "tickSpacing": {
+                "type": "int32",
+                "id": 4
+              },
+              "pool": {
+                "type": "bytes",
+                "id": 5,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "allowances_exempt_event": {
+            "fields": {
+              "token": {
+                "type": "string",
+                "id": 1
+              },
+              "tokenAddress": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "exempt": {
+                "type": "bool",
+                "id": 3
+              }
+            }
+          }
+        }
+      },
+      "koinos": {
+        "nested": {
+          "chain": {
+            "options": {
+              "go_package": "github.com/koinos/koinos-proto-golang/koinos/chain"
+            },
+            "nested": {
+              "authorization_type": {
+                "values": {
+                  "contract_call": 0,
+                  "transaction_application": 1,
+                  "contract_upload": 2
+                }
+              },
+              "call_target": {
+                "fields": {
+                  "contractId": {
+                    "type": "bytes",
+                    "id": 1,
+                    "options": {
+                      "(btype)": "ADDRESS"
+                    }
+                  },
+                  "entryPoint": {
+                    "type": "uint32",
+                    "id": 2
+                  }
+                }
+              },
+              "authorize_arguments": {
+                "oneofs": {
+                  "_call": {
+                    "oneof": [
+                      "call"
+                    ]
+                  }
+                },
+                "fields": {
+                  "type": {
+                    "type": "authorization_type",
+                    "id": 1
+                  },
+                  "call": {
+                    "type": "call_target",
+                    "id": 2,
+                    "options": {
+                      "proto3_optional": true
+                    }
+                  }
+                }
+              },
+              "authorize_result": {
+                "fields": {
+                  "value": {
+                    "type": "bool",
+                    "id": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

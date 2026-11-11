@@ -1,0 +1,7 @@
+**/assembly/proto/**
+**/assembly/*.boilerplate.ts
+**/assembly/index.ts
+interfaces/pool.ts
+interfaces/factory.ts
+utils/Network.ts
+tests/build/**

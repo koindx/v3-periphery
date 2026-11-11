@@ -1,0 +1,1569 @@
+{
+  "methods": {
+    "get_immutables": {
+      "description": "Get the immutable parameters of the pool (factory, tokens, fee and tick spacing)",
+      "argument": "pool.get_immutables_arguments",
+      "return": "pool.get_immutables_result",
+      "entry_point": 2396806717,
+      "read_only": true
+    },
+    "authorize": {
+      "description": "Check if authorized",
+      "read-only": false,
+      "argument": "koinos.chain.authorize_arguments",
+      "return": "koinos.chain.authorize_result",
+      "entry_point": 1244511632
+    },
+    "slot0": {
+      "description": "Get the current price, tick, oracle state, protocol fee and lock status",
+      "argument": "pool.slot0_arguments",
+      "return": "pool.slot0_result",
+      "entry_point": 1280002591,
+      "read_only": true
+    },
+    "liquidity": {
+      "description": "Get the currently in range liquidity available to the pool",
+      "argument": "pool.liquidity_arguments",
+      "return": "pool.str",
+      "entry_point": 1505001118,
+      "read_only": true
+    },
+    "fee_growth_global": {
+      "description": "Get the fee growth per unit of liquidity (Q128.128) of both tokens",
+      "argument": "pool.fee_growth_global_arguments",
+      "return": "pool.fee_growth_global_result",
+      "entry_point": 2270199337,
+      "read_only": true
+    },
+    "protocol_fees": {
+      "description": "Get the amounts of token0 and token1 owed to the protocol",
+      "argument": "pool.protocol_fees_arguments",
+      "return": "pool.protocol_fees_result",
+      "entry_point": 1635859967,
+      "read_only": true
+    },
+    "ticks": {
+      "description": "Look up information about a specific tick in the pool",
+      "argument": "pool.ticks_arguments",
+      "return": "pool.ticks_result",
+      "entry_point": 1917777898,
+      "read_only": true
+    },
+    "tick_bitmap": {
+      "description": "Get a 256 bit word of the packed tick initialized boolean values",
+      "argument": "pool.tick_bitmap_arguments",
+      "return": "pool.str",
+      "entry_point": 1382888993,
+      "read_only": true
+    },
+    "positions": {
+      "description": "Get the information about a position",
+      "argument": "pool.positions_arguments",
+      "return": "pool.positions_result",
+      "entry_point": 4110971345,
+      "read_only": true
+    },
+    "observations": {
+      "description": "Get an observation of the oracle by index",
+      "argument": "pool.observations_arguments",
+      "return": "pool.observations_result",
+      "entry_point": 3217401524,
+      "read_only": true
+    },
+    "observe": {
+      "description": "Get the cumulative tick and liquidity as of each timestamp `seconds_agos` from the current block timestamp",
+      "argument": "pool.observe_arguments",
+      "return": "pool.observe_result",
+      "entry_point": 1961398985,
+      "read_only": true
+    },
+    "snapshot_cumulatives_inside": {
+      "description": "Get a snapshot of the tick cumulative, seconds per liquidity and seconds inside a tick range",
+      "argument": "pool.snapshot_cumulatives_inside_arguments",
+      "return": "pool.snapshot_cumulatives_inside_result",
+      "entry_point": 3385500498,
+      "read_only": true
+    },
+    "get_populated_ticks": {
+      "description": "Get a page of initialized ticks (like Uniswap TickLens), ordered by tick",
+      "argument": "pool.get_populated_ticks_arguments",
+      "return": "pool.get_populated_ticks_result",
+      "entry_point": 1430213741,
+      "read_only": true
+    },
+    "quote_swap": {
+      "description": "Simulate a swap without modifying the state (used by the quoter)",
+      "argument": "pool.quote_swap_arguments",
+      "return": "pool.quote_swap_result",
+      "entry_point": 1846861930,
+      "read_only": true
+    },
+    "configure": {
+      "description": "Set the immutable parameters of the pool, called once by the factory when the pool is created",
+      "argument": "pool.configure_arguments",
+      "return": "pool.empty_object",
+      "entry_point": 2429587032,
+      "read_only": false
+    },
+    "initialize": {
+      "description": "Set the initial price for the pool",
+      "argument": "pool.initialize_arguments",
+      "return": "pool.empty_object",
+      "entry_point": 1192148610,
+      "read_only": false
+    },
+    "mint": {
+      "description": "Add liquidity for the given recipient/tick_lower/tick_upper position. The caller receives a koindx_v3_mint_callback",
+      "argument": "pool.mint_arguments",
+      "return": "pool.mint_result",
+      "entry_point": 3698268091,
+      "read_only": false
+    },
+    "collect": {
+      "description": "Collect tokens owed to a position. The position owner is the calling contract, or `owner` (who must authorize the operation) when called directly",
+      "argument": "pool.collect_arguments",
+      "return": "pool.collect_result",
+      "entry_point": 2172800144,
+      "read_only": false
+    },
+    "burn": {
+      "description": "Burn liquidity from the sender and account tokens owed for the liquidity to the position. The position owner is the calling contract, or `owner` (who must authorize the operation) when called directly",
+      "argument": "pool.burn_arguments",
+      "return": "pool.burn_result",
+      "entry_point": 2241834181,
+      "read_only": false
+    },
+    "swap": {
+      "description": "Swap token0 for token1 (zero_for_one), or token1 for token0. Exact input: `amount_specified` of the input token is paid, exact output: `amount_specified` of the output token is received. The caller receives a koindx_v3_swap_callback",
+      "argument": "pool.swap_arguments",
+      "return": "pool.swap_result",
+      "entry_point": 3662136052,
+      "read_only": false
+    },
+    "flash": {
+      "description": "Receive token0 and/or token1 and pay it back, plus a fee, in the koindx_v3_flash_callback",
+      "argument": "pool.flash_arguments",
+      "return": "pool.empty_object",
+      "entry_point": 2233353149,
+      "read_only": false
+    },
+    "increase_observation_cardinality_next": {
+      "description": "Increase the maximum number of price and liquidity observations that this pool will store",
+      "argument": "pool.increase_observation_cardinality_next_arguments",
+      "return": "pool.empty_object",
+      "entry_point": 1228394800,
+      "read_only": false
+    },
+    "set_fee_protocol": {
+      "description": "Set the denominator of the protocol's % share of the fees (only factory owner)",
+      "argument": "pool.set_fee_protocol_arguments",
+      "return": "pool.empty_object",
+      "entry_point": 1125609654,
+      "read_only": false
+    },
+    "collect_protocol": {
+      "description": "Collect the protocol fee accrued to the pool (only factory owner)",
+      "argument": "pool.collect_protocol_arguments",
+      "return": "pool.collect_protocol_result",
+      "entry_point": 2993728766,
+      "read_only": false
+    }
+  },
+  "types": {
+    "nested": {
+      "pool": {
+        "nested": {
+          "empty_object": {
+            "fields": {}
+          },
+          "str": {
+            "fields": {
+              "value": {
+                "type": "string",
+                "id": 1
+              }
+            }
+          },
+          "boole": {
+            "fields": {
+              "value": {
+                "type": "bool",
+                "id": 1
+              }
+            }
+          },
+          "address": {
+            "fields": {
+              "value": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "token_object": {
+            "fields": {
+              "isNameservice": {
+                "type": "bool",
+                "id": 1
+              },
+              "nameservice": {
+                "type": "string",
+                "id": 2
+              },
+              "tokenAddress": {
+                "type": "bytes",
+                "id": 3,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "config_record": {
+            "fields": {
+              "factory": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "token0": {
+                "type": "token_object",
+                "id": 2
+              },
+              "token1": {
+                "type": "token_object",
+                "id": 3
+              },
+              "fee": {
+                "type": "uint32",
+                "id": 4
+              },
+              "tickSpacing": {
+                "type": "sint32",
+                "id": 5
+              },
+              "maxLiquidityPerTick": {
+                "type": "bytes",
+                "id": 6
+              }
+            }
+          },
+          "state_record": {
+            "fields": {
+              "sqrtPriceX96": {
+                "type": "bytes",
+                "id": 1
+              },
+              "tick": {
+                "type": "sint32",
+                "id": 2
+              },
+              "observationIndex": {
+                "type": "uint32",
+                "id": 3
+              },
+              "observationCardinality": {
+                "type": "uint32",
+                "id": 4
+              },
+              "observationCardinalityNext": {
+                "type": "uint32",
+                "id": 5
+              },
+              "feeProtocol": {
+                "type": "uint32",
+                "id": 6
+              },
+              "unlocked": {
+                "type": "bool",
+                "id": 7
+              },
+              "feeGrowthGlobal0X128": {
+                "type": "bytes",
+                "id": 8
+              },
+              "feeGrowthGlobal1X128": {
+                "type": "bytes",
+                "id": 9
+              },
+              "protocolFeesToken0": {
+                "type": "bytes",
+                "id": 10
+              },
+              "protocolFeesToken1": {
+                "type": "bytes",
+                "id": 11
+              },
+              "liquidity": {
+                "type": "bytes",
+                "id": 12
+              }
+            }
+          },
+          "tick_record": {
+            "fields": {
+              "liquidityGross": {
+                "type": "bytes",
+                "id": 1
+              },
+              "liquidityNet": {
+                "type": "bytes",
+                "id": 2
+              },
+              "feeGrowthOutside0X128": {
+                "type": "bytes",
+                "id": 3
+              },
+              "feeGrowthOutside1X128": {
+                "type": "bytes",
+                "id": 4
+              },
+              "tickCumulativeOutside": {
+                "type": "sint64",
+                "id": 5
+              },
+              "secondsPerLiquidityOutsideX128": {
+                "type": "bytes",
+                "id": 6
+              },
+              "secondsOutside": {
+                "type": "uint32",
+                "id": 7
+              },
+              "initialized": {
+                "type": "bool",
+                "id": 8
+              }
+            }
+          },
+          "bitmap_record": {
+            "fields": {
+              "value": {
+                "type": "bytes",
+                "id": 1
+              }
+            }
+          },
+          "position_record": {
+            "fields": {
+              "liquidity": {
+                "type": "bytes",
+                "id": 1
+              },
+              "feeGrowthInside0LastX128": {
+                "type": "bytes",
+                "id": 2
+              },
+              "feeGrowthInside1LastX128": {
+                "type": "bytes",
+                "id": 3
+              },
+              "tokensOwed0": {
+                "type": "bytes",
+                "id": 4
+              },
+              "tokensOwed1": {
+                "type": "bytes",
+                "id": 5
+              }
+            }
+          },
+          "observation_record": {
+            "fields": {
+              "blockTimestamp": {
+                "type": "uint32",
+                "id": 1
+              },
+              "tickCumulative": {
+                "type": "sint64",
+                "id": 2
+              },
+              "secondsPerLiquidityCumulativeX128": {
+                "type": "bytes",
+                "id": 3
+              },
+              "initialized": {
+                "type": "bool",
+                "id": 4
+              }
+            }
+          },
+          "mint_callback_args": {
+            "fields": {
+              "amount0Owed": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1Owed": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "data": {
+                "type": "bytes",
+                "id": 3
+              }
+            }
+          },
+          "swap_callback_args": {
+            "fields": {
+              "zeroForOne": {
+                "type": "bool",
+                "id": 1
+              },
+              "amountIn": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountOut": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "data": {
+                "type": "bytes",
+                "id": 4
+              }
+            }
+          },
+          "flash_callback_args": {
+            "fields": {
+              "fee0": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "fee1": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "data": {
+                "type": "bytes",
+                "id": 3
+              }
+            }
+          },
+          "get_immutables_arguments": {
+            "fields": {}
+          },
+          "get_immutables_result": {
+            "fields": {
+              "factory": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "token0": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "token1": {
+                "type": "bytes",
+                "id": 3,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "fee": {
+                "type": "uint32",
+                "id": 4
+              },
+              "tickSpacing": {
+                "type": "int32",
+                "id": 5
+              },
+              "maxLiquidityPerTick": {
+                "type": "string",
+                "id": 6
+              },
+              "token0Object": {
+                "type": "token_object",
+                "id": 7
+              },
+              "token1Object": {
+                "type": "token_object",
+                "id": 8
+              }
+            }
+          },
+          "slot0_arguments": {
+            "fields": {}
+          },
+          "slot0_result": {
+            "fields": {
+              "sqrtPriceX96": {
+                "type": "string",
+                "id": 1
+              },
+              "tick": {
+                "type": "int32",
+                "id": 2
+              },
+              "observationIndex": {
+                "type": "uint32",
+                "id": 3
+              },
+              "observationCardinality": {
+                "type": "uint32",
+                "id": 4
+              },
+              "observationCardinalityNext": {
+                "type": "uint32",
+                "id": 5
+              },
+              "feeProtocol": {
+                "type": "uint32",
+                "id": 6
+              },
+              "unlocked": {
+                "type": "bool",
+                "id": 7
+              }
+            }
+          },
+          "liquidity_arguments": {
+            "fields": {}
+          },
+          "fee_growth_global_arguments": {
+            "fields": {}
+          },
+          "fee_growth_global_result": {
+            "fields": {
+              "feeGrowthGlobal0X128": {
+                "type": "string",
+                "id": 1
+              },
+              "feeGrowthGlobal1X128": {
+                "type": "string",
+                "id": 2
+              }
+            }
+          },
+          "protocol_fees_arguments": {
+            "fields": {}
+          },
+          "protocol_fees_result": {
+            "fields": {
+              "token0": {
+                "type": "string",
+                "id": 1
+              },
+              "token1": {
+                "type": "string",
+                "id": 2
+              }
+            }
+          },
+          "ticks_arguments": {
+            "fields": {
+              "tick": {
+                "type": "int32",
+                "id": 1
+              }
+            }
+          },
+          "ticks_result": {
+            "fields": {
+              "liquidityGross": {
+                "type": "string",
+                "id": 1
+              },
+              "liquidityNet": {
+                "type": "string",
+                "id": 2
+              },
+              "feeGrowthOutside0X128": {
+                "type": "string",
+                "id": 3
+              },
+              "feeGrowthOutside1X128": {
+                "type": "string",
+                "id": 4
+              },
+              "tickCumulativeOutside": {
+                "type": "int64",
+                "id": 5,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "secondsPerLiquidityOutsideX128": {
+                "type": "string",
+                "id": 6
+              },
+              "secondsOutside": {
+                "type": "uint32",
+                "id": 7
+              },
+              "initialized": {
+                "type": "bool",
+                "id": 8
+              }
+            }
+          },
+          "tick_bitmap_arguments": {
+            "fields": {
+              "wordPosition": {
+                "type": "int32",
+                "id": 1
+              }
+            }
+          },
+          "positions_arguments": {
+            "fields": {
+              "owner": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "tickLower": {
+                "type": "int32",
+                "id": 2
+              },
+              "tickUpper": {
+                "type": "int32",
+                "id": 3
+              }
+            }
+          },
+          "positions_result": {
+            "fields": {
+              "liquidity": {
+                "type": "string",
+                "id": 1
+              },
+              "feeGrowthInside0LastX128": {
+                "type": "string",
+                "id": 2
+              },
+              "feeGrowthInside1LastX128": {
+                "type": "string",
+                "id": 3
+              },
+              "tokensOwed0": {
+                "type": "string",
+                "id": 4
+              },
+              "tokensOwed1": {
+                "type": "string",
+                "id": 5
+              }
+            }
+          },
+          "observations_arguments": {
+            "fields": {
+              "index": {
+                "type": "uint32",
+                "id": 1
+              }
+            }
+          },
+          "observations_result": {
+            "fields": {
+              "blockTimestamp": {
+                "type": "uint32",
+                "id": 1
+              },
+              "tickCumulative": {
+                "type": "int64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "secondsPerLiquidityCumulativeX128": {
+                "type": "string",
+                "id": 3
+              },
+              "initialized": {
+                "type": "bool",
+                "id": 4
+              }
+            }
+          },
+          "observe_arguments": {
+            "fields": {
+              "secondsAgos": {
+                "rule": "repeated",
+                "type": "uint32",
+                "id": 1
+              }
+            }
+          },
+          "observe_result": {
+            "fields": {
+              "tickCumulatives": {
+                "rule": "repeated",
+                "type": "int64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "secondsPerLiquidityCumulativeX128s": {
+                "rule": "repeated",
+                "type": "string",
+                "id": 2
+              }
+            }
+          },
+          "snapshot_cumulatives_inside_arguments": {
+            "fields": {
+              "tickLower": {
+                "type": "int32",
+                "id": 1
+              },
+              "tickUpper": {
+                "type": "int32",
+                "id": 2
+              }
+            }
+          },
+          "snapshot_cumulatives_inside_result": {
+            "fields": {
+              "tickCumulativeInside": {
+                "type": "int64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "secondsPerLiquidityInsideX128": {
+                "type": "string",
+                "id": 2
+              },
+              "secondsInside": {
+                "type": "uint32",
+                "id": 3
+              }
+            }
+          },
+          "get_populated_ticks_arguments": {
+            "fields": {
+              "start": {
+                "type": "int32",
+                "id": 1
+              },
+              "limit": {
+                "type": "uint32",
+                "id": 2
+              },
+              "descending": {
+                "type": "bool",
+                "id": 3
+              }
+            }
+          },
+          "populated_tick": {
+            "fields": {
+              "tick": {
+                "type": "int32",
+                "id": 1
+              },
+              "liquidityNet": {
+                "type": "string",
+                "id": 2
+              },
+              "liquidityGross": {
+                "type": "string",
+                "id": 3
+              }
+            }
+          },
+          "get_populated_ticks_result": {
+            "fields": {
+              "ticks": {
+                "rule": "repeated",
+                "type": "populated_tick",
+                "id": 1
+              }
+            }
+          },
+          "quote_swap_arguments": {
+            "fields": {
+              "zeroForOne": {
+                "type": "bool",
+                "id": 1
+              },
+              "exactInput": {
+                "type": "bool",
+                "id": 2
+              },
+              "amountSpecified": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "sqrtPriceLimitX96": {
+                "type": "string",
+                "id": 4
+              }
+            }
+          },
+          "quote_swap_result": {
+            "fields": {
+              "amountIn": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountOut": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "sqrtPriceX96After": {
+                "type": "string",
+                "id": 3
+              },
+              "tickAfter": {
+                "type": "int32",
+                "id": 4
+              },
+              "initializedTicksCrossed": {
+                "type": "uint32",
+                "id": 5
+              }
+            }
+          },
+          "configure_arguments": {
+            "fields": {
+              "token0": {
+                "type": "token_object",
+                "id": 1
+              },
+              "token1": {
+                "type": "token_object",
+                "id": 2
+              },
+              "fee": {
+                "type": "uint32",
+                "id": 3
+              },
+              "tickSpacing": {
+                "type": "int32",
+                "id": 4
+              }
+            }
+          },
+          "initialize_arguments": {
+            "fields": {
+              "sqrtPriceX96": {
+                "type": "string",
+                "id": 1
+              }
+            }
+          },
+          "mint_arguments": {
+            "fields": {
+              "recipient": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "tickLower": {
+                "type": "int32",
+                "id": 2
+              },
+              "tickUpper": {
+                "type": "int32",
+                "id": 3
+              },
+              "amount": {
+                "type": "string",
+                "id": 4
+              },
+              "data": {
+                "type": "bytes",
+                "id": 5
+              }
+            }
+          },
+          "mint_result": {
+            "fields": {
+              "amount0": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "collect_arguments": {
+            "fields": {
+              "recipient": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "tickLower": {
+                "type": "int32",
+                "id": 2
+              },
+              "tickUpper": {
+                "type": "int32",
+                "id": 3
+              },
+              "amount0Requested": {
+                "type": "uint64",
+                "id": 4,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1Requested": {
+                "type": "uint64",
+                "id": 5,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "owner": {
+                "type": "bytes",
+                "id": 6,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "collect_result": {
+            "fields": {
+              "amount0": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "burn_arguments": {
+            "fields": {
+              "tickLower": {
+                "type": "int32",
+                "id": 1
+              },
+              "tickUpper": {
+                "type": "int32",
+                "id": 2
+              },
+              "amount": {
+                "type": "string",
+                "id": 3
+              },
+              "owner": {
+                "type": "bytes",
+                "id": 4,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "burn_result": {
+            "fields": {
+              "amount0": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "swap_arguments": {
+            "fields": {
+              "recipient": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "zeroForOne": {
+                "type": "bool",
+                "id": 2
+              },
+              "exactInput": {
+                "type": "bool",
+                "id": 3
+              },
+              "amountSpecified": {
+                "type": "uint64",
+                "id": 4,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "sqrtPriceLimitX96": {
+                "type": "string",
+                "id": 5
+              },
+              "data": {
+                "type": "bytes",
+                "id": 6
+              }
+            }
+          },
+          "swap_result": {
+            "fields": {
+              "amountIn": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountOut": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "flash_arguments": {
+            "fields": {
+              "recipient": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "amount0": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "data": {
+                "type": "bytes",
+                "id": 4
+              }
+            }
+          },
+          "increase_observation_cardinality_next_arguments": {
+            "fields": {
+              "observationCardinalityNext": {
+                "type": "uint32",
+                "id": 1
+              }
+            }
+          },
+          "set_fee_protocol_arguments": {
+            "fields": {
+              "feeProtocol0": {
+                "type": "uint32",
+                "id": 1
+              },
+              "feeProtocol1": {
+                "type": "uint32",
+                "id": 2
+              }
+            }
+          },
+          "collect_protocol_arguments": {
+            "fields": {
+              "recipient": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "amount0Requested": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1Requested": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "collect_protocol_result": {
+            "fields": {
+              "amount0": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "configure_event": {
+            "fields": {
+              "factory": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "token0": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "token1": {
+                "type": "bytes",
+                "id": 3,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "fee": {
+                "type": "uint32",
+                "id": 4
+              },
+              "tickSpacing": {
+                "type": "int32",
+                "id": 5
+              }
+            }
+          },
+          "initialize_event": {
+            "fields": {
+              "sqrtPriceX96": {
+                "type": "string",
+                "id": 1
+              },
+              "tick": {
+                "type": "int32",
+                "id": 2
+              }
+            }
+          },
+          "mint_event": {
+            "fields": {
+              "sender": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "owner": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "tickLower": {
+                "type": "int32",
+                "id": 3
+              },
+              "tickUpper": {
+                "type": "int32",
+                "id": 4
+              },
+              "amount": {
+                "type": "string",
+                "id": 5
+              },
+              "amount0": {
+                "type": "uint64",
+                "id": 6,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 7,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "collect_event": {
+            "fields": {
+              "owner": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "recipient": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "tickLower": {
+                "type": "int32",
+                "id": 3
+              },
+              "tickUpper": {
+                "type": "int32",
+                "id": 4
+              },
+              "amount0": {
+                "type": "uint64",
+                "id": 5,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 6,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "burn_event": {
+            "fields": {
+              "owner": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "tickLower": {
+                "type": "int32",
+                "id": 2
+              },
+              "tickUpper": {
+                "type": "int32",
+                "id": 3
+              },
+              "amount": {
+                "type": "string",
+                "id": 4
+              },
+              "amount0": {
+                "type": "uint64",
+                "id": 5,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 6,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "swap_event": {
+            "fields": {
+              "sender": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "recipient": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "zeroForOne": {
+                "type": "bool",
+                "id": 3
+              },
+              "amountIn": {
+                "type": "uint64",
+                "id": 4,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountOut": {
+                "type": "uint64",
+                "id": 5,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "sqrtPriceX96": {
+                "type": "string",
+                "id": 6
+              },
+              "liquidity": {
+                "type": "string",
+                "id": 7
+              },
+              "tick": {
+                "type": "int32",
+                "id": 8
+              }
+            }
+          },
+          "flash_event": {
+            "fields": {
+              "sender": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "recipient": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "amount0": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 4,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "paid0": {
+                "type": "uint64",
+                "id": 5,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "paid1": {
+                "type": "uint64",
+                "id": 6,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "increase_observation_cardinality_next_event": {
+            "fields": {
+              "observationCardinalityNextOld": {
+                "type": "uint32",
+                "id": 1
+              },
+              "observationCardinalityNextNew": {
+                "type": "uint32",
+                "id": 2
+              }
+            }
+          },
+          "set_fee_protocol_event": {
+            "fields": {
+              "feeProtocol0Old": {
+                "type": "uint32",
+                "id": 1
+              },
+              "feeProtocol1Old": {
+                "type": "uint32",
+                "id": 2
+              },
+              "feeProtocol0New": {
+                "type": "uint32",
+                "id": 3
+              },
+              "feeProtocol1New": {
+                "type": "uint32",
+                "id": 4
+              }
+            }
+          },
+          "collect_protocol_event": {
+            "fields": {
+              "sender": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "recipient": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "amount0": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amount1": {
+                "type": "uint64",
+                "id": 4,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          }
+        }
+      },
+      "koinos": {
+        "nested": {
+          "chain": {
+            "options": {
+              "go_package": "github.com/koinos/koinos-proto-golang/koinos/chain"
+            },
+            "nested": {
+              "authorization_type": {
+                "values": {
+                  "contract_call": 0,
+                  "transaction_application": 1,
+                  "contract_upload": 2
+                }
+              },
+              "call_target": {
+                "fields": {
+                  "contractId": {
+                    "type": "bytes",
+                    "id": 1,
+                    "options": {
+                      "(btype)": "ADDRESS"
+                    }
+                  },
+                  "entryPoint": {
+                    "type": "uint32",
+                    "id": 2
+                  }
+                }
+              },
+              "authorize_arguments": {
+                "oneofs": {
+                  "_call": {
+                    "oneof": [
+                      "call"
+                    ]
+                  }
+                },
+                "fields": {
+                  "type": {
+                    "type": "authorization_type",
+                    "id": 1
+                  },
+                  "call": {
+                    "type": "call_target",
+                    "id": 2,
+                    "options": {
+                      "proto3_optional": true
+                    }
+                  }
+                }
+              },
+              "authorize_result": {
+                "fields": {
+                  "value": {
+                    "type": "bool",
+                    "id": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
